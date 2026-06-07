@@ -1,170 +1,155 @@
+// src/pages/auth/Login.jsx — CafeBlend Premium
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { BsFillExclamationDiamondFill } from "react-icons/bs";
 import { ImSpinner2 } from "react-icons/im";
-import { FcGoogle } from "react-icons/fc";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { useApp } from "../../context/AppContext";
+import Card from "../../components/ui/Card";
+import Button from "../../components/ui/Button";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { loginUser } = useApp();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [dataForm, setDataForm] = useState({ email: "", password: "" });
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
-    setDataForm({ ...dataForm, [name]: value });
+    setDataForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const user = storedUsers.find(
-      (item) =>
-        item.email === dataForm.email && item.password === dataForm.password
-    );
+    const result = loginUser(dataForm.email, dataForm.password);
 
-    if (!user) {
-      setError("Invalid credentials. Pastikan email dan password sudah benar atau daftar terlebih dahulu.");
+    if (!result.success) {
+      setError("Email atau password salah. Silakan coba lagi.");
       setLoading(false);
       return;
     }
 
     setLoading(false);
-    navigate("/");
+    if (result.user.role === "owner") {
+      navigate("/admin");
+    } else if (result.user.role === "tenant") {
+      navigate("/tenant");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
-    <div className="flex w-full h-full">
-
-      {/* ── KIRI: area gambar ── */}
-      <div className="w-[45%] bg-gray-200 rounded-l-2xl flex-shrink-0">
-        {/* Ganti dengan gambar asli:
-            <img src="/assets/banner.jpg" alt="banner"
-                 className="w-full h-full object-cover rounded-l-2xl" />
-        */}
+    <Card variant="elevated" padding="p-8" className="w-full">
+      {/* ── Logo & Header ── */}
+      <div className="text-center mb-8">
+        <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary-dark)] flex items-center justify-center mx-auto shadow-neumorphic-sm mb-4">
+          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+        </div>
+        <h1 className="text-2xl font-serif font-bold text-[var(--color-primary-dark)]">
+          Selamat Datang
+        </h1>
+        <p className="text-sm text-[var(--color-accent-text)]/60 mt-1 font-sans">
+          Masuk ke akun Eternal Kos Anda
+        </p>
       </div>
 
-      {/* ── KANAN: form ── */}
-      <div className="flex-1 bg-amber-50 rounded-r-2xl flex flex-col justify-center px-8 py-8">
+      {/* ── Error ── */}
+      {error && (
+        <div className="mb-5 p-3.5 rounded-xl bg-[var(--color-danger)]/8 border border-[var(--color-danger)]/15 flex items-start gap-2.5">
+          <BsFillExclamationDiamondFill className="text-[var(--color-danger)] mt-0.5 shrink-0" size={14} />
+          <span className="text-xs text-[var(--color-danger)] font-medium">{error}</span>
+        </div>
+      )}
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-5">Sign in</h2>
+      {/* ── Loading ── */}
+      {loading && (
+        <div className="mb-5 p-3.5 rounded-xl bg-[var(--color-primary-light)]/50 flex items-center gap-2.5">
+          <ImSpinner2 className="animate-spin text-[var(--color-primary)]" size={14} />
+          <span className="text-xs text-[var(--color-accent-text)] font-medium">Memproses...</span>
+        </div>
+      )}
 
-        {/* Error */}
-        {error && (
-          <div className="bg-red-100 mb-4 p-3 text-xs text-gray-600 rounded-lg flex items-start gap-2">
-            <BsFillExclamationDiamondFill className="text-red-500 mt-0.5 shrink-0" />
-            {error}
-          </div>
-        )}
-
-        {/* Loading */}
-        {loading && (
-          <div className="bg-gray-100 mb-4 p-3 text-xs rounded-lg flex items-center gap-2">
-            <ImSpinner2 className="animate-spin" />
-            Mohon Tunggu...
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-3">
-
-          {/* Email */}
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              onChange={handleChange}
-              placeholder="subiantosawit@gmail.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-xs text-gray-800 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-xs text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent pr-9"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                {showPassword
-                  ? <HiEye size={15} />
-                  : <HiEyeOff size={15} />
-                }
-              </button>
-            </div>
-          </div>
-
-          {/* Remember me + Forgot */}
-          <div className="flex items-center justify-between pt-0.5">
-            <label className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-3.5 h-3.5 rounded border-gray-300 accent-yellow-500"
-              />
-              Remember me
-            </label>
-            <Link
-              to="/forgot-password"
-              className="text-xs text-yellow-600 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
-
-          {/* Sign In Button */}
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 text-white font-semibold py-2 rounded-md transition duration-200 text-sm mt-1"
-          >
-            Sign in
-          </button>
-        </form>
-
-        {/* Divider */}
-        <div className="flex items-center gap-2 my-3">
-          <div className="flex-1 h-px bg-gray-300" />
-          <span className="text-xs text-gray-400">or</span>
-          <div className="flex-1 h-px bg-gray-300" />
+      {/* ── Form ── */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Email */}
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/70 mb-1.5">
+            Email
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={dataForm.email}
+            onChange={handleChange}
+            placeholder="owner@eternal.com"
+            className="w-full px-4 py-2.5 rounded-xl text-sm bg-white border border-gray-300 placeholder-gray-400 text-[var(--color-accent-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition"
+            required
+          />
         </div>
 
-        {/* Google */}
-        <button
-          type="button"
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200"
-        >
-          <FcGoogle size={16} />
-          Sign in with Google
-        </button>
+        {/* Password */}
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/70 mb-1.5">
+            Password
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={dataForm.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              className="w-full px-4 py-2.5 rounded-xl text-sm bg-white border border-gray-300 placeholder-gray-400 text-[var(--color-accent-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition pr-11"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-accent-text)]/40 hover:text-[var(--color-accent-text)]/70 transition"
+            >
+              {showPassword ? <HiEyeOff size={18} /> : <HiEye size={18} />}
+            </button>
+          </div>
+        </div>
 
+        {/* Submit */}
+        <Button type="submit" variant="primary" className="w-full mt-2" loading={loading}>
+          {loading ? "Memproses..." : "Masuk"}
+        </Button>
+      </form>
 
-        <p className="text-center text-xs text-gray-500 mt-4">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-yellow-600 font-medium hover:underline">
-            Sign Up
-          </Link>
-        </p>
-
+      {/* ── Divider ── */}
+      <div className="flex items-center gap-3 my-5">
+        <div className="flex-1 h-px bg-[var(--color-primary-light)]" />
+        <span className="text-xs text-[var(--color-accent-text)]/40 font-medium">atau</span>
+        <div className="flex-1 h-px bg-[var(--color-primary-light)]" />
       </div>
-    </div>
+
+      {/* ── Info Akun Demo ── */}
+      <div className="p-4 rounded-2xl bg-[var(--color-tertiary)] border border-[var(--color-primary-light)] text-xs text-[var(--color-accent-text)]/70 space-y-1.5">
+        <p className="font-bold text-[var(--color-accent-text)]/80 uppercase tracking-wider text-[10px]">Akun Demo</p>
+        <p><span className="font-medium">Owner:</span> owner@eternal.com / admin</p>
+        <p><span className="font-medium">Penghuni:</span> siti@gmail.com / user</p>
+      </div>
+
+      {/* ── Register Link ── */}
+      <p className="text-center text-xs text-[var(--color-accent-text)]/50 mt-5 font-sans">
+        Belum punya akun?{" "}
+        <Link
+          to="/register"
+          className="text-[var(--color-primary)] font-bold hover:underline"
+        >
+          Daftar Sekarang
+        </Link>
+      </p>
+    </Card>
   );
 }

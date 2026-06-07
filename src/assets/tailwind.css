@@ -1,55 +1,110 @@
 @import "tailwindcss";
 
-@font-face{
-    font-family: 'Barlow';
-    src: url('/fonts/Barlow-Regular.ttf');
+/* ───────── CafeBlend ───────── */
+@font-face {
+  font-family: "Barlow";
+  src: url("/fonts/Barlow-Regular.ttf");
 }
 
-@font-face{
-    font-family: 'Poppins';
-    src: url('/fonts/Poppins-Reguler.ttf');
+@font-face {
+  font-family: "Barlow";
+  font-weight: 700;
+  src: url("/fonts/Barlow-Bold.ttf");
 }
 
-@font-face{
-    font-family: 'Poppins';
-    src: url('/fonts/Poppins-ExtraBold.ttf');
+@font-face {
+  font-family: "Barlow";
+  font-weight: 800;
+  src: url("/fonts/Barlow-ExtraBold.ttf");
+}
+
+@font-face {
+  font-family: "DM Serif Display";
+  src: url("/fonts/DMSerifDisplay-Regular.ttf");
+}
+
+@font-face {
+  font-family: "DM Serif Display";
+  font-weight: 700;
+  src: url("/fonts/DMSerifDisplay-Bold.ttf");
 }
 
 :root {
-    --font-barlow: "Barlow", sans-serif;
-    --font-poppins: "Poppins", sans-serif;
+  /* ── Font Legacy (fallback) ── */
+  --font-barlow: "Barlow", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-dm: "DM Serif Display", serif;
 
-    --color-latar: #f3f4f6;
-    --color-teks: #374151;
-    --color-teks-samping: #6b7280;
-    --color-garis: #e5e7eb;
-    --color-hijau: #00B074;
-    --color-merah: #ef4444;
-    --color-biru: #3b82f6;
-    --color-kuning: #f59e0b;
+  /* ── Legacy / Do Not Remove ── */
+  --color-latar: #f3f4f6;
+  --color-teks: #374151;
+  --color-teks-samping: #6b7280;
+  --color-garis: #e5e7eb;
+  --color-hijau: #00B074;
+  --color-merah: #ef4444;
+  --color-biru: #3b82f6;
+  --color-kuning: #f59e0b;
+
+  /* ══════ Design Tokens — Eternal x CafeBlend ══════ */
+  --color-primary: #8B5E3C; /* CafeBlend primary — CTAs, nav */
+  --color-primary-dark: #5C3D24; /* deeper brown */
+  --color-primary-light: #E6DED5; /* warm beige / hover */
+
+  --color-secondary: #C4956A; /* tags, decorative accents */
+  --color-tertiary: #FDF6EC; /* card wash, background tint */
+
+  --color-accent-bg: #FDF6EC; /* page bg (warm cream) */
+  --color-accent-text: #3E2723; /* dark coffee text */
+  --color-surface: #FFFFFF;
+  --color-surface-inset: #F0E6D6;
+
+  --color-success: #059669;
+  --color-danger: #EF4444;
+  --color-warning: #D97706;
+  --color-info: #6366F1;
 }
 
-body {
-    font-family: var(--font-barlow);
-}
-
+/* ── Base ── */
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #F8F5F2;
-    color: #4A3728;
+    font-family: "Barlow", sans-serif;
+    background-color: var(--color-accent-bg);
+    color: var(--color-accent-text);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-dm);
   }
 }
 
+/* ── Neumorphic Shadows ── */
 @layer utilities {
+  .shadow-neumorphic-raised {
+    box-shadow: 6px 6px 12px #d5c9b8, -6px -6px 12px #ffffff;
+  }
+  .shadow-neumorphic-inset {
+    box-shadow: inset 4px 4px 8px #d5c9b8, inset -4px -4px 8px #ffffff;
+  }
+  .shadow-neumorphic-sm {
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.06);
+  }
+  .shadow-neumorphic-md {
+    box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.08);
+  }
+  .shadow-neumorphic-lg {
+    box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
   .rounded-card {
     border-radius: 2rem;
   }
   .bg-accent {
-    background-color: #D69156;
+    background-color: var(--color-primary);
   }
   .footer-bg {
-    background-color: #634819;
+    background-color: var(--color-primary-dark);
   }
 }
 

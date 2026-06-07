@@ -16,9 +16,8 @@ const PageHeader = () => {
       
       <div className="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider">
         <Link to="/" className="hover:text-[#D69156] transition">Beranda</Link>
-        <a href="#fitur" className="hover:text-[#D69156] transition">Fitur</a>
-        <a href="#testimoni" className="hover:text-[#D69156] transition">Testimoni</a>
-        <a href="#faq" className="hover:text-[#D69156] transition">FAQ</a>
+        <Link to="/kamar" className="hover:text-[#D69156] transition">Daftar Kamar</Link>
+        <Link to="/informasi" className="hover:text-[#D69156] transition">Informasi & Aturan</Link>
       </div>
 
       <div className="flex items-center gap-4">
