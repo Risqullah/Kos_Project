@@ -1,12 +1,11 @@
-// src/components/ui/Card.jsx
-import React from "react";
+
 
 const VARIANTS = {
-  default: "bg-white border border-gray-100 shadow-sm",
-  elevated: "bg-white shadow-neumorphic-md",
-  neumorphic: "bg-[var(--color-accent-bg)] shadow-neumorphic-raised",
-  inset: "bg-[var(--color-surface-inset)] shadow-neumorphic-inset",
-  tertiary: "bg-[var(--color-tertiary)] border border-[var(--color-primary-light)]",
+  default: "bg-[var(--color-surface)] border border-[var(--color-secondary)]/50 shadow-sm",
+  elevated: "bg-[var(--color-surface)] border border-[var(--color-secondary)]/45 shadow-neumorphic-md",
+  neumorphic: "bg-[var(--color-surface-inset)] border border-[var(--color-secondary)]/60 shadow-neumorphic-raised",
+  inset: "bg-[var(--color-surface-inset)] shadow-neumorphic-inset border border-[var(--color-secondary)]/50",
+  tertiary: "bg-[var(--color-tertiary)] border border-[var(--color-secondary)]/55",
 };
 
 const Card = ({
@@ -21,7 +20,7 @@ const Card = ({
   return (
     <div
       onClick={onClick}
-      className={`rounded-[2rem] transition-all duration-300 ${
+      className={`rounded-2xl transition-all duration-300 ${
         VARIANTS[variant] || VARIANTS.default
       } ${
         hoverable ? "hover:shadow-neumorphic-md hover:-translate-y-1 cursor-pointer" : ""

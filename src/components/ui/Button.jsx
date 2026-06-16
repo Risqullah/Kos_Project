@@ -1,5 +1,3 @@
-// src/components/ui/Button.jsx
-import React from "react";
 import { ImSpinner2 } from "react-icons/im";
 
 const Button = ({
@@ -16,20 +14,20 @@ const Button = ({
 }) => {
   // Varian tombol — warm & premium (Eternal x CafeBlend)
   const variants = {
-    primary: "bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95 shadow-neumorphic-sm",
-    secondary: "bg-[var(--color-primary-dark)] text-white hover:opacity-90 active:scale-95 shadow-neumorphic-sm",
-    success: "bg-[var(--color-success)] text-white hover:opacity-90 active:scale-95",
-    danger: "bg-[var(--color-danger)] text-white hover:opacity-90 active:scale-95",
-    outline: "border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white active:scale-95",
-    ghost: "text-[var(--color-accent-text)] hover:bg-[var(--color-primary-light)] active:scale-95",
-    "neumorphic-primary": "bg-[var(--color-accent-bg)] text-[var(--color-primary)] shadow-neumorphic-raised active:shadow-neumorphic-inset active:scale-95 font-bold",
-    "neumorphic-secondary": "bg-[var(--color-accent-bg)] text-[var(--color-accent-text)] shadow-neumorphic-raised active:shadow-neumorphic-inset active:scale-95",
+    primary: "bg-[var(--color-primary)] text-[var(--color-accent-text)] hover:bg-[var(--color-primary-dark)] hover:text-white active:scale-95 shadow-neumorphic-sm font-extrabold",
+    secondary: "bg-[var(--color-primary-dark)] text-white hover:opacity-90 active:scale-95 shadow-neumorphic-sm font-extrabold",
+    success: "bg-[var(--color-success)] text-white hover:opacity-90 active:scale-95 font-bold",
+    danger: "bg-[var(--color-danger)] text-white hover:opacity-90 active:scale-95 font-bold",
+    outline: "border-2 border-[var(--color-primary-dark)]/50 text-[var(--color-primary-dark)] hover:bg-[var(--color-primary-dark)] hover:text-white active:scale-95 font-extrabold",
+    ghost: "text-[var(--color-accent-text)] hover:bg-[var(--color-primary-light)]/20 active:scale-95 font-bold",
+    "neumorphic-primary": "bg-[var(--color-accent-bg)] text-[var(--color-primary-dark)] shadow-neumorphic-raised active:shadow-neumorphic-inset active:scale-95 font-bold border border-[var(--color-primary-light)]/40",
+    "neumorphic-secondary": "bg-[var(--color-accent-bg)] text-[var(--color-accent-text)] shadow-neumorphic-raised active:shadow-neumorphic-inset active:scale-95 font-semibold",
   };
 
   const sizes = {
-    sm: "px-4 py-1.5 text-xs font-semibold rounded-full tracking-wider uppercase",
-    md: "px-6 py-2.5 text-sm font-bold rounded-full tracking-wider uppercase",
-    lg: "px-8 py-3.5 text-base font-bold rounded-full tracking-wider uppercase",
+    sm: "px-4 py-1.5 text-xs font-medium rounded-lg",
+    md: "px-6 py-2.5 text-sm font-semibold rounded-xl shadow-sm hover:shadow",
+    lg: "px-8 py-3.5 text-base font-semibold rounded-2xl shadow-sm hover:shadow-md",
   };
 
   return (

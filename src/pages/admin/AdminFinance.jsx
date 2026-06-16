@@ -1,5 +1,4 @@
-// src/pages/admin/AdminFinance.jsx — Keuangan Premium (CafeBlend)
-import React, { useState } from "react";
+import { useState } from "react";
 import { useApp } from "../../context/AppContext";
 import Card from "../../components/ui/Card";
 import Input from "../../components/ui/Input";

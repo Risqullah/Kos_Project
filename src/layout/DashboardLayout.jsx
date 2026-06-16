@@ -1,5 +1,4 @@
-// src/layout/DashboardLayout.jsx — CafeBlend Premium
-import React, { useState } from "react";
+import { useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import Sidebar from "../components/layout/Sidebar";
@@ -17,7 +16,7 @@ const DashboardLayout = () => {
   const menuItems = currentUser.role === "owner" ? ADMIN_MENU : TENANT_MENU;
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-accent-bg)] font-sans text-[var(--color-accent-text)]">
+    <div className="flex h-screen w-screen overflow-hidden dashboard-dark-theme font-sans">
       {/* Desktop Sidebar */}
       <div className="hidden md:block">
         <Sidebar menuItems={menuItems} />
@@ -42,7 +41,7 @@ const DashboardLayout = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile Header */}
-        <header className="md:hidden flex items-center justify-between bg-white border-b border-gray-100 px-6 py-4 shrink-0">
+        <header className="md:hidden flex items-center justify-between bg-[var(--color-surface)] border-b border-[var(--color-primary-light)]/40 px-6 py-4 shrink-0">
           <div className="flex items-center gap-3">
             <button onClick={() => setIsMobileOpen(true)}
               className="p-1 text-[var(--color-accent-text)] hover:bg-[var(--color-primary-light)]/50 rounded-lg">
@@ -50,7 +49,7 @@ const DashboardLayout = () => {
             </button>
             <div className="text-lg font-bold tracking-wider text-[var(--color-primary-dark)] uppercase font-serif">Eternal</div>
           </div>
-          <div className="w-8 h-8 bg-[var(--color-primary-light)] rounded-full flex items-center justify-center font-bold text-xs uppercase text-[var(--color-accent-text)] shadow-neumorphic-sm">
+          <div className="w-8 h-8 bg-[var(--color-primary-light)] rounded-full flex items-center justify-center font-bold text-xs uppercase text-[var(--color-accent-text)] shadow-sm border border-[var(--color-primary-light)]/50">
             {currentUser.name.charAt(0)}
           </div>
         </header>

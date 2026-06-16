@@ -1,8 +1,7 @@
-// src/pages/InfoRules.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { ATURAN_KOS } from "../config/constants";
+import { useApp } from "../context/AppContext";
 import { 
   HiOutlineShieldCheck, 
   HiOutlineKey, 
@@ -14,6 +13,7 @@ import {
 
 const InfoRules = () => {
   const [activeTab, setActiveTab] = useState("rules");
+  const { rules, contact } = useApp();
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 p-4 md:p-8">
@@ -26,7 +26,7 @@ const InfoRules = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex border-b border-gray-100 justify-center md:justify-start gap-4">
+      <div className="flex border-b border-[var(--color-primary-light)]/40 justify-center md:justify-start gap-4">
         {[
           { id: "rules", label: "Tata Tertib Kos" },
           { id: "security", label: "Keamanan & Fasilitas" },
@@ -50,7 +50,7 @@ const InfoRules = () => {
       <div className="mt-8">
         {activeTab === "rules" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {ATURAN_KOS.map((rule, idx) => (
+            {rules.map((rule, idx) => (
               <Card key={idx} padding="p-8" className="flex flex-col justify-between">
                 <div>
                   <span className="text-sm font-black text-primary/70 block mb-3">PASAL 0{idx + 1}</span>
@@ -146,12 +146,12 @@ const InfoRules = () => {
                   <p className="text-xs text-accent-text/70">Ingin survey lokasi langsung atau menanyakan status kamar? Hubungi pengelola kami.</p>
                 </div>
                 
-                <div className="space-y-4 border-t border-gray-50 pt-4">
+                <div className="space-y-4 border-t border-[var(--color-primary-light)]/20 pt-4">
                   <div className="flex gap-3 text-xs items-center">
                     <HiOutlineLocationMarker size={18} className="text-primary shrink-0" />
                     <div>
                       <span className="font-bold text-accent-text block">Alamat Kos</span>
-                      <span className="text-accent-text/70">Jl. Rumbai Indah No. 77, Pekanbaru, Riau (Dekat Kampus PCR)</span>
+                      <span className="text-accent-text/70">{contact.address}</span>
                     </div>
                   </div>
 
@@ -159,13 +159,13 @@ const InfoRules = () => {
                     <HiOutlinePhone size={18} className="text-primary shrink-0" />
                     <div>
                       <span className="font-bold text-accent-text block">Nomor Telepon / WhatsApp</span>
-                      <span className="text-accent-text/70">0812-3456-7890</span>
+                      <span className="text-accent-text/70">{contact.phone}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-2">
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noopener noreferrer">
                     <Button variant="primary" className="w-full flex items-center justify-center gap-2">
                       <HiOutlineUserGroup size={16} /> Hubungi Lewat WhatsApp
                     </Button>
@@ -175,7 +175,7 @@ const InfoRules = () => {
             </div>
 
             {/* Peta Google Maps */}
-            <div className="lg:col-span-7 h-[350px] md:h-[450px] rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm">
+            <div className="lg:col-span-7 h-[350px] md:h-[450px] rounded-2xl overflow-hidden border border-[var(--color-primary-light)]/40 shadow-sm">
               <iframe 
                 title="Peta Lokasi PCR"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6201659779374!2d101.42318721475355!3d0.5701831995839958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!2f0!4e2!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5ab670868f0ef%3A0xcd19e48f72782e4e!2sPoliteknik%20Caltex%20Riau!5e0!3m2!1sid!2sid!4v1686000000000!5m2!1sid!2sid" 

@@ -1,110 +1,129 @@
+@import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap');
 @import "tailwindcss";
 
-/* ───────── CafeBlend ───────── */
-@font-face {
-  font-family: "Barlow";
-  src: url("/fonts/Barlow-Regular.ttf");
-}
-
-@font-face {
-  font-family: "Barlow";
-  font-weight: 700;
-  src: url("/fonts/Barlow-Bold.ttf");
-}
-
-@font-face {
-  font-family: "Barlow";
-  font-weight: 800;
-  src: url("/fonts/Barlow-ExtraBold.ttf");
-}
-
-@font-face {
-  font-family: "DM Serif Display";
-  src: url("/fonts/DMSerifDisplay-Regular.ttf");
-}
-
-@font-face {
-  font-family: "DM Serif Display";
-  font-weight: 700;
-  src: url("/fonts/DMSerifDisplay-Bold.ttf");
-}
-
 :root {
-  /* ── Font Legacy (fallback) ── */
-  --font-barlow: "Barlow", sans-serif;
-  --font-poppins: "Poppins", sans-serif;
-  --font-dm: "DM Serif Display", serif;
+  /* ── Fonts ── */
+  --font-heading: "Clash Grotesk", sans-serif;
+  --font-body: "Satoshi", sans-serif;
 
   /* ── Legacy / Do Not Remove ── */
-  --color-latar: #f3f4f6;
-  --color-teks: #374151;
+  --color-latar: #FFF8E7;
+  --color-teks: #2D1E18;
   --color-teks-samping: #6b7280;
   --color-garis: #e5e7eb;
-  --color-hijau: #00B074;
+  --color-bg-gradient: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+  --color-text-primary: #1e3a5f;
+  --color-text-accent: #0d47a1;
+  --color-stroke: #e0f7fa;
+  --color-hijau: #059669;
   --color-merah: #ef4444;
   --color-biru: #3b82f6;
   --color-kuning: #f59e0b;
 
-  /* ══════ Design Tokens — Eternal x CafeBlend ══════ */
-  --color-primary: #8B5E3C; /* CafeBlend primary — CTAs, nav */
-  --color-primary-dark: #5C3D24; /* deeper brown */
-  --color-primary-light: #E6DED5; /* warm beige / hover */
+  /* ══════ Design Tokens — Eternal x Imperial TOPAZ ══════ */
+  --color-primary: #E6A520; /* Topaz Gold */
+  --color-primary-dark: #7A4A00; /* Topaz Brown */
+  --color-primary-light: #FFD77A; /* Topaz Gold muda */
 
-  --color-secondary: #C4956A; /* tags, decorative accents */
-  --color-tertiary: #FDF6EC; /* card wash, background tint */
+  --color-secondary: #C4956A; 
+  --color-tertiary: #FFFBF2;
 
-  --color-accent-bg: #FDF6EC; /* page bg (warm cream) */
-  --color-accent-text: #3E2723; /* dark coffee text */
+  --color-accent-bg: #FFF8E7; /* Krem Topaz */
+  --color-accent-text: #2D1E18; /* Cokelat gelap */
   --color-surface: #FFFFFF;
-  --color-surface-inset: #F0E6D6;
+  --color-surface-inset: #F4EBE0;
 
-  --color-success: #059669;
+  /* ── Cool Dark Espresso Tones ── */
+  --color-dark-bg: #140C07;
+  --color-dark-surface: #1F140F;
+  --color-dark-border: #2D1E18;
+  --color-text-parchment: #FFF8E7;
+
+  --color-success: #10B981;
   --color-danger: #EF4444;
-  --color-warning: #D97706;
-  --color-info: #6366F1;
+  --color-warning: #F59E0B;
+  --color-info: #3B82F6;
 }
 
 /* ── Base ── */
 @layer base {
   body {
-    font-family: "Barlow", sans-serif;
+    font-family: var(--font-body), sans-serif;
     background-color: var(--color-accent-bg);
     color: var(--color-accent-text);
   }
 
   h1,
   h2,
-  h3 {
-    font-family: var(--font-dm);
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading), sans-serif;
   }
 }
 
-/* ── Neumorphic Shadows ── */
+/* ── Modern shadows & details (QuestUI Inspired) ── */
 @layer utilities {
   .shadow-neumorphic-raised {
-    box-shadow: 6px 6px 12px #d5c9b8, -6px -6px 12px #ffffff;
+    box-shadow: 0 6px 24px rgba(45, 30, 24, 0.09);
+    border: 1px solid rgba(196, 149, 106, 0.25);
   }
   .shadow-neumorphic-inset {
-    box-shadow: inset 4px 4px 8px #d5c9b8, inset -4px -4px 8px #ffffff;
+    box-shadow: inset 0 3px 6px rgba(45, 30, 24, 0.06);
+    border: 1px solid rgba(196, 149, 106, 0.2);
+    background-color: var(--color-surface-inset);
   }
   .shadow-neumorphic-sm {
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 3px 12px rgba(45, 30, 24, 0.06);
   }
   .shadow-neumorphic-md {
-    box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 40px -15px rgba(45, 30, 24, 0.08), 0 15px 20px -10px rgba(45, 30, 24, 0.05);
+    border: 1px solid rgba(196, 149, 106, 0.18);
   }
   .shadow-neumorphic-lg {
-    box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 30px 60px -15px rgba(45, 30, 24, 0.1), 0 20px 30px -10px rgba(45, 30, 24, 0.05);
   }
+  .shadow-glow {
+    box-shadow: 0 0 25px rgba(230, 165, 32, 0.15);
+  }
+  .border-accent-top {
+    border-top: 3px solid var(--color-primary);
+  }
+  .border-accent-gold {
+  border: 1px solid var(--color-secondary);
+}
+.text-stroke {
+  -webkit-text-stroke: 0.5px var(--color-stroke);
+}
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.bg-gradient-primary {
+  background: var(--color-bg-gradient);
+}
 
   .rounded-card {
-    border-radius: 2rem;
+    border-radius: 12px;
   }
   .bg-accent {
     background-color: var(--color-primary);
   }
   .footer-bg {
     background-color: var(--color-primary-dark);
+  }
+
+  /* ── Scoped Light/High-Contrast Dashboard Theme ── */
+  .dashboard-dark-theme {
+    --color-accent-bg: #FCF8F2; /* Very soft warm cream */
+    --color-accent-text: #1C100D; /* Very dark coffee brown for high contrast text */
+    --color-surface: #FFFFFF; /* Pure white card background for perfect contrast */
+    --color-primary-light: #FFD77A; /* Soft topaz gold borders */
+    --color-primary-dark: #7A4A00; /* Dark brown for high-contrast titles */
+    --color-tertiary: #FFFBF4; /* Light warm tertiary background */
+    --color-surface-inset: #FAF4E8; /* Very soft, light cream inset background */
+    background-color: #FCF8F2;
+    color: #1C100D;
   }
 }
 

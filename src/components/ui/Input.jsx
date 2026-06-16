@@ -1,5 +1,4 @@
-// src/components/ui/Input.jsx
-import React from "react";
+
 
 const Input = ({
   label,
@@ -34,7 +33,7 @@ const Input = ({
           onChange={onChange}
           placeholder={placeholder}
           required={required}
-          className={`w-full px-4 py-2.5 rounded-xl text-xs text-accent-text bg-white border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
+          className={`w-full px-4 py-2.5 rounded-lg text-xs text-accent-text bg-white border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
             Icon ? "pl-10" : ""
           } ${error ? "border-danger focus:ring-danger" : ""}`}
           {...props}

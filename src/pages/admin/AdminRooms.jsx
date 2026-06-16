@@ -1,17 +1,20 @@
-// src/pages/admin/AdminRooms.jsx — Manajemen Kamar Premium (CafeBlend)
-import React, { useState } from "react";
+import { useState } from "react";
 import { useApp } from "../../context/AppContext";
+import roomPhoto from "../../assets/img/room_photo.png";
+import standardImg from "../../assets/img/standard.png";
+import deluxeImg from "../../assets/img/deluxe.png";
+import suiteImg from "../../assets/img/suite.png";
 import { ROOM_FACILITIES } from "../../config/constants";
 import Card from "../../components/ui/Card";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
-import { HiPlus, HiTrash, HiPencil, HiX, HiOfficeBuilding, HiPhotograph } from "react-icons/hi";
+import { HiPlus, HiTrash, HiPencil, HiX, HiOfficeBuilding } from "react-icons/hi";
 
 const ROOM_IMAGES = {
-  standard: "https://images.unsplash.com/photo-1522771739015-7c1f5f5b1b6b?auto=format&fit=crop&q=80&w=500&h=350",
-  deluxe: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=500&h=350",
-  suite: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbb?auto=format&fit=crop&q=80&w=500&h=350",
+  standard: standardImg,
+  deluxe: deluxeImg,
+  suite: suiteImg,
 };
 
 const typeLabels = { standard: "Standard", deluxe: "Deluxe", suite: "Suite" };
@@ -29,6 +32,16 @@ const FacilityIcon = ({ id }) => {
 const AdminRooms = () => {
   const { rooms, addRoom, updateRoom, deleteRoom } = useApp();
 
+  // ── Filter state ──
+  const [statusFilter, setStatusFilter] = useState("Semua");
+  const [typeFilter, setTypeFilter] = useState("Semua");
+
+  const filteredRooms = rooms.filter((room) => {
+    const matchStatus = statusFilter === "Semua" || room.status === statusFilter;
+    const matchType = typeFilter === "Semua" || room.type?.toLowerCase() === typeFilter.toLowerCase();
+    return matchStatus && matchType;
+  });
+
   // ── Modal state ──
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -38,7 +51,8 @@ const AdminRooms = () => {
     type: "standard",
     price: 1500000,
     status: "Tersedia",
-    facilities: ["ac", "wifi", "bed", "cabinet"],
+    image: "",
+    facilities: ["bed_dipan", "desk", "ac", "bathroom_shower", "cabinet"],
   });
   const [error, setError] = useState("");
 
@@ -64,7 +78,7 @@ const AdminRooms = () => {
     setIsEditing(false);
     setFormData({
       id: "", name: "", type: "standard", price: 1500000,
-      status: "Tersedia", facilities: ["ac", "wifi", "bed", "cabinet"],
+      status: "Tersedia", image: "", facilities: ["bed_dipan", "desk", "ac", "bathroom_shower", "cabinet"],
     });
     setError("");
   };
@@ -90,25 +104,20 @@ const AdminRooms = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    if (!formData.id.trim()) return setError("ID Kamar wajib diisi.");
     if (!formData.name.trim()) return setError("Nama Kamar wajib diisi.");
+    if (!formData.type.trim()) return setError("Tipe Kamar wajib diisi.");
 
     if (isEditing) {
+      if (!formData.id) return setError("ID Kamar tidak valid.");
       updateRoom(formData);
       resetForm();
     } else {
-      if (rooms.some((r) => r.id.toLowerCase() === formData.id.toLowerCase()))
-        return setError(`Kamar "${formData.id}" sudah ada.`);
       addRoom(formData);
       resetForm();
     }
   };
 
-  const statusColor = (s) => {
-    if (s === "Tersedia") return "success";
-    if (s === "Terisi") return "default";
-    return "danger";
-  };
+  // Helper mapping has been removed in favor of passing status directly to Badge
 
   return (
     <div className="space-y-8">
@@ -127,6 +136,54 @@ const AdminRooms = () => {
         </Button>
       </div>
 
+      {/* ── Filter Bar ── */}
+      <div className="flex flex-col sm:flex-row gap-4 bg-[var(--color-surface)] border border-[var(--color-primary-light)]/30 p-4 rounded-2xl shadow-sm justify-between items-center">
+        <div className="flex flex-wrap gap-4 items-center w-full sm:w-auto">
+          {/* Status Filter */}
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/70">
+            <span>Status:</span>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-3 py-1.5 rounded-xl bg-[var(--color-surface-inset)] border border-[var(--color-primary-light)]/40 focus:outline-none focus:ring-1 focus:ring-primary text-xs font-semibold text-[var(--color-accent-text)]"
+            >
+              <option value="Semua">Semua Status</option>
+              <option value="Tersedia">Tersedia</option>
+              <option value="Terisi">Terisi</option>
+              <option value="Perbaikan">Perbaikan</option>
+            </select>
+          </div>
+
+          {/* Type Filter */}
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/70">
+            <span>Tipe:</span>
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="px-3 py-1.5 rounded-xl bg-[var(--color-surface-inset)] border border-[var(--color-primary-light)]/40 focus:outline-none focus:ring-1 focus:ring-primary text-xs font-semibold text-[var(--color-accent-text)]"
+            >
+              <option value="Semua">Semua Tipe</option>
+              <option value="standard">Standard</option>
+              <option value="deluxe">Deluxe</option>
+              <option value="suite">Suite</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Reset Filter Button */}
+        {(statusFilter !== "Semua" || typeFilter !== "Semua") && (
+          <button
+            onClick={() => {
+              setStatusFilter("Semua");
+              setTypeFilter("Semua");
+            }}
+            className="text-xs text-[var(--color-primary)] font-bold hover:underline"
+          >
+            Reset Filter
+          </button>
+        )}
+      </div>
+
       {/* ── Grid Kamar ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {rooms.length === 0 ? (
@@ -137,26 +194,33 @@ const AdminRooms = () => {
               Tambah Kamar Pertama
             </Button>
           </Card>
+        ) : filteredRooms.length === 0 ? (
+          <Card variant="tertiary" padding="p-12" className="col-span-full text-center">
+            <HiOfficeBuilding size={48} className="mx-auto text-gray-300 animate-pulse" />
+            <p className="mt-4 text-sm text-gray-400 font-sans">Tidak ada kamar yang cocok dengan filter aktif.</p>
+            <Button
+              variant="outline"
+              className="mt-4 mx-auto"
+              onClick={() => {
+                setStatusFilter("Semua");
+                setTypeFilter("Semua");
+              }}
+            >
+              Reset Filter
+            </Button>
+          </Card>
         ) : (
-          rooms.map((room) => (
+          filteredRooms.map((room) => (
             <Card key={room.id} variant="default" padding="p-0" className="overflow-hidden">
               {/* Foto Kamar */}
-              <div className="relative h-44 bg-[var(--color-primary-light)]">
+              <div className="relative h-44 bg-[var(--color-primary-light)] overflow-hidden">
                 <img
-                  src={ROOM_IMAGES[room.type] || ROOM_IMAGES.standard}
+                  src={room.image === "/room_photo.png" || room.image?.includes("room_photo.png") ? roomPhoto : (room.image || ROOM_IMAGES[room.type?.toLowerCase()] || ROOM_IMAGES.standard)}
                   alt={room.name}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover transition-all duration-300 ${
+                    room.status !== "Tersedia" ? "grayscale contrast-125 brightness-90" : ""
+                  }`}
                 />
-                <div className="absolute top-3 left-3">
-                  <Badge status={statusColor(room.status)} variant="chip">
-                    {room.status}
-                  </Badge>
-                </div>
-                <div className="absolute top-3 right-3">
-                  <span className="text-[11px] font-bold uppercase bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
-                    {typeLabels[room.type] || room.type}
-                  </span>
-                </div>
               </div>
 
               {/* Info Kamar */}
@@ -166,6 +230,14 @@ const AdminRooms = () => {
                     <h3 className="text-base font-bold font-serif text-[var(--color-accent-text)]">
                       {room.name}
                     </h3>
+                    <div className="flex gap-2 items-center mt-1.5 mb-1 flex-wrap">
+                      <Badge status={room.status} variant="chip" className="!text-[9px] !px-2.5 !py-0.5">
+                        {room.status}
+                      </Badge>
+                      <span className="text-[9px] font-bold uppercase bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md border border-gray-200/50">
+                        {typeLabels[room.type?.toLowerCase()] || room.type}
+                      </span>
+                    </div>
                     <p className="text-[11px] text-[var(--color-accent-text)]/50 font-sans">
                       ID: {room.id}
                     </p>
@@ -217,7 +289,7 @@ const AdminRooms = () => {
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
               <div>
                 <h2 className="text-lg font-bold font-serif text-[var(--color-primary-dark)]">
-                  {isEditing ? `Edit ${formData.id}` : "Tambah Kamar Baru"}
+                  {isEditing ? `Edit Kamar: ${formData.name}` : "Tambah Kamar Baru"}
                 </h2>
                 <p className="text-xs text-[var(--color-accent-text)]/50 font-sans">
                   Lengkapi data kamar di bawah ini.
@@ -236,25 +308,13 @@ const AdminRooms = () => {
               )}
 
               <div className="grid grid-cols-2 gap-4">
-                <Input label="ID Kamar" name="id" value={formData.id} onChange={handleChange}
-                  placeholder="A101" disabled={isEditing} required />
                 <Input label="Nama Kamar" name="name" value={formData.name} onChange={handleChange}
                   placeholder="Kamar A101" required />
+                <Input label="Tipe Kamar" name="type" value={formData.type} onChange={handleChange}
+                  placeholder="Standard / Deluxe / Suite" required />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/80">
-                    Tipe Kamar
-                  </label>
-                  <select name="type" value={formData.type} onChange={handleChange}
-                    className="w-full px-4 py-2.5 rounded-xl text-xs bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition">
-                    <option value="standard">Standard</option>
-                    <option value="deluxe">Deluxe</option>
-                    <option value="suite">Suite</option>
-                  </select>
-                </div>
-
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/80">
                     Status Kamar
@@ -266,10 +326,13 @@ const AdminRooms = () => {
                     <option value="Perbaikan">Perbaikan</option>
                   </select>
                 </div>
+
+                <Input label="Tarif Sewa (Rp/bulan)" type="number" name="price"
+                  value={formData.price} onChange={handleChange} required />
               </div>
 
-              <Input label="Tarif Sewa (Rp/bulan)" type="number" name="price"
-                value={formData.price} onChange={handleChange} required />
+              <Input label="URL Foto Kamar" name="image" value={formData.image} onChange={handleChange}
+                placeholder="https://images.unsplash.com/... atau kosongkan untuk gambar default" />
 
               {/* Fasilitas */}
               <div className="space-y-2">

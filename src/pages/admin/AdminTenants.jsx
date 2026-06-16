@@ -1,5 +1,4 @@
-// src/pages/admin/AdminTenants.jsx — Data Penghuni Premium (CafeBlend)
-import React, { useState } from "react";
+import { useState } from "react";
 import { useApp } from "../../context/AppContext";
 import Card from "../../components/ui/Card";
 import Input from "../../components/ui/Input";
@@ -177,7 +176,7 @@ const AdminTenants = () => {
                   <select name="status" value={formData.status} onChange={handleChange}
                     className="w-full px-4 py-2.5 rounded-xl text-xs bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
                     <option value="Aktif">Aktif</option>
-                    <option value="Tidak Aktif">Tidak Aktif</option>
+                    <option value="Nonaktif">Tidak Aktif</option>
                   </select>
                 </div>
               </div>

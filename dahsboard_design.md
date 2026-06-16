@@ -1,129 +1,65 @@
-# CafeBlend Design System
+# Modern Espresso Minimalist Design System
 
 ## Overview
-
-CafeBlend is a cozy, coffee-toned design system for coffee shop and small cafe websites. The neumorphism-inspired elevation and warm browns create a tactile, inviting atmosphere that mirrors the comfort of a neighborhood cafe. Rounded forms and soft gradients make every element feel warm to the touch.
+Modern Espresso Minimalist adalah sistem desain yang menggabungkan kehangatan warna kopi (CafeBlend) dengan ketegasan struktur geometris modern yang bersih (terinspirasi dari QuestUI). Desain ini meninggalkan efek neumorphism yang tebal dan beralih ke layout berlapis yang *simple*, sudut kartu bersudut tegas, garis batas tipis yang tajam, serta warna latar belakang kopi gelap (*Dark Espresso*) yang eksklusif dan "cool" untuk mengedepankan kesan premium.
 
 ---
 
 ## Colors
 
-- **Primary** (#8B5E3C): CTAs, nav accents, headings
-- **Secondary** (#C4956A): Tags, decorative accents
-- **Tertiary** (#FDF6EC): Background tint, card wash
-- **Background** (#FDF6EC): Page background (warm cream)
-- **Surface** (#FFFFFF): Cards, modals
-- **Surface Inset** (#F0E6D6): Neumorphic inset fields
-- **Success** (#059669): Order ready, available
-- **Warning** (#D97706): Low stock, wait times
-- **Error** (#EF4444): Out of stock, error
-- **Info** (#6366F1): New item, seasonal
+### Light Mode Tones (Default)
+- **Primary Coffee** (#8B5E3C): Aksen utama, tombol CTA, highlight
+- **Secondary Amber** (#C4956A): Tag dekoratif, border aksen, hover tint
+- **Tertiary Cream** (#FDF6EC): Latar belakang halaman publik (warm cream)
+- **Surface Light** (#FFFFFF): Permukaan kartu, panel putih bersih
+- **Border Light** (#EAE0D5): Garis batas tipis default
 
-## Typography
+### Cool Dark Espresso Tones (Untuk Dashboard & Area Eksklusif)
+- **Background Dark** (#120907): Latar belakang hitam kopi pekat (Espresso)
+- **Surface Dark** (#1D110E): Permukaan kartu gelap
+- **Border Dark** (#2E1E1A): Garis batas tipis gelap
+- **Text Parchment** (#F4EBE1): Warna teks krem lembut (menggantikan putih murni agar tidak merusak mata)
 
-- **Headline Font**: DM Serif Display
-- **Body Font**: Work Sans
-- **Mono Font**: IBM Plex Mono
-
-- **h1**: 34px regular, 42px line height. Cafe name, hero text.
-- **h2**: 26px regular, 34px line height. Section headings.
-- **h3**: 20px regular, 28px line height. Menu category titles.
-- **h4**: 16px regular, 24px line height. Item names.
-- **body**: 14px regular, 22px line height. Descriptions.
-- **small**: 12px regular, 18px line height. Prices, meta info.
-- **mono**: 13px regular, 20px line height. Order numbers, prices.
+### Status Semantic Colors
+- **Success** (#059669): Kamar tersedia, transaksi sukses
+- **Warning** (#D97706): Jatuh tempo sewa, pending
+- **Danger** (#EF4444): Kerusakan parah, reservasi ditolak
+- **Info** (#6366F1): Informasi penting, pemeliharaan
 
 ---
 
-## Spacing
+## Typography
 
-Base unit: **8px**
-- **xs**: 4px — Tight gaps
-- **sm**: 8px — Inline spacing
-- **md**: 16px — Component padding
-- **lg**: 24px — Card padding
-- **xl**: 32px — Section gaps
-- **2xl**: 48px — Page section spacing
-- **3xl**: 64px — Layout margins
+- **Headline Font**: DM Serif Display (kesan mewah dan inscribed)
+- **Body Font**: Barlow / Work Sans (kesan modern, terbaca jelas)
+- **Mono Font**: Fira Code / IBM Plex Mono (untuk kode kamar, nominal uang)
 
-## Border Radius
+- **h1 / H1**: DM Serif Display, tebal, bersudut tegas.
+- **body**: Barlow/Work Sans, nyaman dibaca untuk deskripsi panjang.
+- **small / uppercase**: Digunakan untuk chip, badge, dan label kecil dengan letter-spacing renggang (`tracking-wider`) untuk memberi kesan presisi.
 
-- **None** (0px): —
-- **sm** (6px): Tags, small elements
-- **md** (12px): Buttons, cards, inputs
-- **lg** (16px): Modals, panels
-- **full** (9999px): Avatars, pills, toggles
+---
 
-## Elevation
+## Spacing & Geometry
+- **Sudut (Border Radius)**:
+  - **Cards & Modals**: `12px` (rounded-xl) atau `16px` (rounded-2xl) untuk tampilan clean.
+  - **Buttons & Inputs**: `6px` (rounded-md) atau `8px` (rounded-lg) untuk ketegasan visual.
+  - **Badges / Toggles**: `4px` atau `full` (pill shape).
+- **Garis Batas (Borders)**: Selalu gunakan ketebalan `1px` yang solid dengan kontras rendah. Hindari border tebal.
 
-Neumorphism-inspired with warm tones for raised and inset states.
-- **raised**: 6px 6px 12px #D5C9B8, -6px -6px 12px #FFFFFF. Raised elements.
-- **inset**: inset 4px 4px 8px #D5C9B8, inset -4px -4px 8px #FFFFFF. Inset inputs.
-- **sm**: 2px offset, 4px blur, #000000 at 6%. Subtle lift.
-- **md**: 4px offset, 12px blur, #000000 at 8%. Cards, dropdowns.
-- **lg**: 8px offset, 24px blur, #000000 at 12%. Modals.
-- **focus**: 3px ring #8B5E3C at 25%. Focus ring.
+---
 
-## Components
+## Elevation & Effects
+- **Glow Shadow**: Menggunakan efek glow tipis berwarna kopi/emas (`shadow-[0_0_15px_rgba(139,94,60,0.15)]`) pada elemen terpilih atau hover state.
+- **Border Aksen**: Kartu penting diberi aksen border atas setebal `2px` menggunakan warna `--color-primary` untuk menegaskan kepentingan konten.
+- **Transitions**: Transisi efek hover dilakukan secara halus selama `200ms` s.d `300ms`.
 
-### Buttons
-#### Variants
-- ****Primary****: #8B5E3C fill, #FFFFFF text, no border. Hover: #6B4226 + raised.
-- ****Secondary****: #FAF0E1 fill, #8B5E3C text, no border. Hover: raised` intensified.
-- ****Ghost****: Transparent fill, #6D4C41 text, no border. Hover: bg #FAF0E1.
-- ****Destructive****: #EF4444 fill, #FFFFFF text, no border. Hover: #DC2626.
-- Neumorphic buttons use `raised` shadow in default state, flatten on press
-#### Sizes
-Sizes: sm (6px 14px, 12px, 34px), md (8px 18px, 14px, 42px), lg (10px 24px, 16px, 50px).
-#### Disabled State
-none (flat) shadow. 0.4 opacity, disabled cursor.
-
-### Cards
-- ****Default****: #FFFFFF fill, no border, raised shadow, 12px radius.
-- ****Elevated****: #FFFFFF fill, no border, md shadow, 12px radius.
-24px padding.
-- Neumorphic cards sit on `background` surface for full shadow effect
-top with `12px 12px 0 0` radius image slot.
-
-### Inputs
-- **Default**: no border, #F0E6D6 fill, inset shadow.
-- **Hover**: no border, #EBE0D0 fill, inset shadow.
-- **Focus**: no border, #F0E6D6 fill, inset` + `focus shadow.
-- **Error**: #EF4444 border, #FEF2F2 fill, no shadow.
-- **Disabled**: no border, #F5EDE3 fill, no shadow.
-42px, padding: 10px 14px, radius: 12px tall.
-- Neumorphic inset style for default/focus states
-Work Sans 500, 14px, `text-primary`, 6px bottom margin **label**, Work Sans 400, 12px, `text-tertiary`, 4px margin-top; errors use `error` color **helper text**.
-
-### Chips
-- ****Filter****: #FAF0E1 fill, #8B5E3C text, no border, pill shape.
-- ****Status****: varies fill, varies text, no border, pill shape.
-- Filter chips use `raised` shadow (mini neumorphic)
-Status chip semantic mapping:
-bg #DCFCE7, text #059669 available, bg #FEF3C7, text #D97706 limited, bg #FEE2E2, text #EF4444 sold out, bg #EDE9FE, text #6366F1 seasonal.
-
-### Lists
-Work Sans 400 14px. 52px row height, 12px/16px padding, 1px #E8DDD0 divider. Hover: background #FAF0E1. Selected: background #F0E6D6, left border 3px #8B5E3C.
-
-### Checkboxes
-18px square, radius: 6px. Unchecked: background #F0E6D6, shadow `inset` (mini). Checked: background #8B5E3C, white checkmark, shadow `raised` (mini). Indeterminate: background #8B5E3C, white dash. Disabled: 40% opacity. Labels in 8px gap Work Sans 400 14px.
-
-### Radio Buttons
-18px circle. Unchecked: background #F0E6D6, shadow `inset` (mini). Selected: border 2px #8B5E3C, inner dot 10px #8B5E3C, shadow `raised`. Disabled: 40% opacity. Labels in 8px gap Work Sans 400 14px.
-
-### Tooltips
-#3E2723 fill, #FFFFFF, Work Sans 400, 12px text, 8px corners, `md` shadow. 8px/12px padding, 6px arrow, 220px max width.
 ---
 
 ## Do's and Don'ts
 
-1. **Do** use the neumorphic `raised`/`inset` shadows only on the warm cream background — they break on pure white.
-2. **Do** keep the coffee-toned palette consistent; avoid introducing cool blues or grays.
-3. **Don't** stack multiple neumorphic elements close together — they need spacing to maintain the soft 3D illusion.
-4. **Do** use DM Serif Display sparingly for headlines only; never for body text.
-5. **Don't** apply `raised` shadow to small elements under 24px — the effect is lost and looks muddy.
-6. **Do** include high-quality product photography with warm white balance matching the palette.
-7. **Don't** use flat error states with neumorphic inputs; switch to bordered style for error/focus clarity.
-8. **Do** maintain a cozy, neighborhood feel — avoid corporate language or dense data tables.
-9. **Don't** use more than two headline sizes on a single page to keep the intimate cafe scale.
-10. **Do** test the neumorphic shadows in both light and dark ambient conditions for readability.
+1. **Do** gunakan garis batas tipis `1px` daripada shadow neumorphic yang kabur untuk kesan modern.
+2. **Do** gunakan font serif DM Serif Display hanya untuk heading besar; gunakan sans-serif untuk isi teks agar mudah dibaca.
+3. **Do** gunakan aksen warna kopi gelap (#1D110E) sebagai surface utama di dashboard agar kontras dan terasa "cool".
+4. **Don't** gunakan warna putih murni (#FFFFFF) sebagai teks di background gelap; gunakan warna krem lembut (#F4EBE1).
+5. **Don't** gunakan sudut melingkar terlalu besar (seperti `rounded-full` pada kartu) yang membuat antarmuka terasa kekanak-kanakan.

@@ -1,5 +1,4 @@
-// src/components/ui/Badge.jsx
-import React from "react";
+
 
 const Badge = ({ children, status = "default", variant = "default", className = "" }) => {
   // Mapping warna status
@@ -11,11 +10,12 @@ const Badge = ({ children, status = "default", variant = "default", className = 
     info: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
 
     // Status spesifik aplikasi
-    Tersedia: "bg-[var(--color-success)]/15 text-[var(--color-success)] font-bold",
-    Terisi: "bg-[var(--color-primary-dark)]/15 text-[var(--color-primary-dark)] font-bold",
-    Perbaikan: "bg-[var(--color-danger)]/15 text-[var(--color-danger)] font-bold",
+    Tersedia: "bg-[var(--color-success)] text-white font-bold",
+    Terisi: "bg-[var(--color-danger)] text-white font-bold",
+    Perbaikan: "bg-[var(--color-warning)] text-white font-bold",
     Aktif: "bg-[var(--color-success)]/15 text-[var(--color-success)] font-bold",
     "Tidak Aktif": "bg-gray-200 text-gray-500 font-bold",
+    Nonaktif: "bg-gray-200 text-gray-500 font-bold",
     Pending: "bg-[var(--color-warning)]/15 text-[var(--color-warning)] font-bold",
     Disetujui: "bg-[var(--color-success)]/15 text-[var(--color-success)] font-bold",
     Ditolak: "bg-[var(--color-danger)]/15 text-[var(--color-danger)] font-bold",
@@ -25,12 +25,12 @@ const Badge = ({ children, status = "default", variant = "default", className = 
   };
 
   const variantStyles = {
-    default: "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
-    chip: "px-4 py-1.5 rounded-full text-[11px] font-semibold",
-    neumorphic: "px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[var(--color-accent-bg)] shadow-neumorphic-sm",
+    default: "px-2.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest",
+    chip: "px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider",
+    neumorphic: "px-3.5 py-1.5 rounded-md text-[9px] font-bold uppercase tracking-widest bg-[var(--color-accent-bg)] border border-[var(--color-primary-light)] shadow-sm",
   };
 
-  const style = statusStyles[status] || statusStyles[children] || statusStyles.default;
+  const style = (status === "default" ? statusStyles[children] : statusStyles[status]) || statusStyles[status] || statusStyles.default;
   const varStyle = variantStyles[variant] || variantStyles.default;
 
   return (

@@ -1,5 +1,3 @@
-// src/pages/admin/AdminOverview.jsx — Dashboard Owner Premium (CafeBlend)
-import React from "react";
 import { useApp } from "../../context/AppContext";
 import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
@@ -35,8 +33,18 @@ const AdminOverview = () => {
 
   // ── Jatuh tempo (14 hari) ──
   const nearDueTenants = tenants.filter((tenant) => {
-    const today = new Date("2026-06-07");
-    const dueDate = new Date(tenant.dueDate);
+    const parseLocalDate = (dateStr) => {
+      if (!dateStr) return null;
+      const [year, month, day] = dateStr.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    };
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const dueDate = parseLocalDate(tenant.dueDate);
+    if (!dueDate) return false;
+
     const diffDays = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
     return diffDays <= 14 && tenant.status === "Aktif";
   });
@@ -45,7 +53,7 @@ const AdminOverview = () => {
   const reservationHeaders = [
     { key: "date", label: "Tanggal" },
     { key: "name", label: "Nama" },
-    { key: "roomId", label: "Kamar" },
+    { key: "roomName", label: "Kamar" },
     {
       key: "duration",
       label: "Durasi",
@@ -105,11 +113,11 @@ const AdminOverview = () => {
       {/* ── Stat Cards (Neumorphic) ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card variant="neumorphic" padding="p-6" className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary-dark)] shrink-0">
             <HiOutlineOfficeBuilding size={24} />
           </div>
           <div>
-            <p className="text-[10px] uppercase font-bold tracking-wider text-[var(--color-accent-text)]/50">
+            <p className="text-xs uppercase font-extrabold tracking-wider text-[var(--color-accent-text)]/75">
               Total Kamar
             </p>
             <p className="text-2xl font-extrabold text-[var(--color-accent-text)] font-serif">
@@ -123,7 +131,7 @@ const AdminOverview = () => {
             <HiOutlineOfficeBuilding size={24} />
           </div>
           <div>
-            <p className="text-[10px] uppercase font-bold tracking-wider text-[var(--color-accent-text)]/50">
+            <p className="text-xs uppercase font-extrabold tracking-wider text-[var(--color-accent-text)]/75">
               Kamar Kosong
             </p>
             <p className="text-2xl font-extrabold text-[var(--color-success)] font-serif">
@@ -133,11 +141,11 @@ const AdminOverview = () => {
         </Card>
 
         <Card variant="neumorphic" padding="p-6" className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary-dark)] shrink-0">
             <HiOutlineUserGroup size={24} />
           </div>
           <div>
-            <p className="text-[10px] uppercase font-bold tracking-wider text-[var(--color-accent-text)]/50">
+            <p className="text-xs uppercase font-extrabold tracking-wider text-[var(--color-accent-text)]/75">
               Kamar Terisi
             </p>
             <p className="text-2xl font-extrabold text-[var(--color-primary-dark)] font-serif">
@@ -151,7 +159,7 @@ const AdminOverview = () => {
             <HiOutlineCash size={24} />
           </div>
           <div>
-            <p className="text-[10px] uppercase font-bold tracking-wider text-[var(--color-accent-text)]/50">
+            <p className="text-xs uppercase font-extrabold tracking-wider text-[var(--color-accent-text)]/75">
               Saldo Bersih
             </p>
             <p className="text-lg font-extrabold text-[var(--color-accent-text)] font-serif">
@@ -179,7 +187,7 @@ const AdminOverview = () => {
               nearDueTenants.map((tenant) => (
                 <div
                   key={tenant.id}
-                  className="flex items-center justify-between p-4 rounded-xl bg-white shadow-neumorphic-sm border-l-4 border-[var(--color-warning)]"
+                  className="flex items-center justify-between p-4 rounded-xl bg-[var(--color-accent-bg)]/40 shadow-sm border-l-4 border-[var(--color-warning)]"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-[var(--color-warning)]/15 flex items-center justify-center text-[var(--color-warning)]">
@@ -189,17 +197,17 @@ const AdminOverview = () => {
                       <p className="text-sm font-bold text-[var(--color-accent-text)] font-sans">
                         {tenant.name}
                       </p>
-                      <p className="text-[11px] text-[var(--color-accent-text)]/50 font-sans">
+                      <p className="text-xs text-[var(--color-accent-text)]/75 font-sans">
                         Kamar {tenant.roomId}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-[11px] font-semibold text-[var(--color-warning)] font-sans">
+                    <p className="text-xs font-bold text-[var(--color-primary-dark)] font-sans">
                       <HiCalendar size={12} className="inline mr-1" />
                       {tenant.dueDate}
                     </p>
-                    <Badge status="warning" variant="chip">
+                    <Badge status="warning" variant="chip" className="mt-1">
                       Jatuh Tempo
                     </Badge>
                   </div>

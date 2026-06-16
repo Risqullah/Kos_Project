@@ -1,6 +1,5 @@
-// src/pages/admin/AdminInfo.jsx — Informasi & Aturan Premium (CafeBlend)
-import React, { useState } from "react";
-import { ATURAN_KOS, FAQ_LIST } from "../../config/constants";
+import { useState, useEffect } from "react";
+import { useApp } from "../../context/AppContext";
 import Card from "../../components/ui/Card";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
@@ -15,30 +14,24 @@ const TABS = [
 
 const AdminInfo = () => {
   const [activeTab, setActiveTab] = useState("rules");
+  const { rules, faqs, contact: dbContact, saveRules, saveFaqs, saveContact } = useApp();
 
   // ── Rules ──
-  const [rules, setRules] = useState(() => JSON.parse(localStorage.getItem("eternal_rules")) || ATURAN_KOS);
   const [ruleForm, setRuleForm] = useState({ title: "", desc: "" });
   const [editingRuleIdx, setEditingRuleIdx] = useState(null);
 
   // ── FAQ ──
-  const [faqs, setFaqs] = useState(() => JSON.parse(localStorage.getItem("eternal_faqs")) || FAQ_LIST);
   const [faqForm, setFaqForm] = useState({ q: "", a: "" });
   const [editingFaqIdx, setEditingFaqIdx] = useState(null);
 
   // ── Contact ──
-  const [contact, setContact] = useState(() => {
-    const saved = localStorage.getItem("eternal_contact");
-    return saved ? JSON.parse(saved) : {
-      address: "Jl. Rumbai Indah No. 77, Pekanbaru, Riau (Dekat Kampus PCR)",
-      phone: "0812-3456-7890",
-      whatsapp: "6281234567890",
-    };
-  });
+  const [contact, setContact] = useState({ address: "", phone: "", whatsapp: "" });
 
-  // ── Helpers ──
-  const saveRules = (updated) => { setRules(updated); localStorage.setItem("eternal_rules", JSON.stringify(updated)); };
-  const saveFaqs = (updated) => { setFaqs(updated); localStorage.setItem("eternal_faqs", JSON.stringify(updated)); };
+  useEffect(() => {
+    if (dbContact) {
+      setContact(dbContact);
+    }
+  }, [dbContact]);
 
   // ── Rules Handlers ──
   const handleEditRule = (idx) => { setEditingRuleIdx(idx); setRuleForm({ title: rules[idx].title, desc: rules[idx].desc }); };
@@ -66,10 +59,10 @@ const AdminInfo = () => {
     saveFaqs([...faqs, faqForm]); setFaqForm({ q: "", a: "" });
   };
 
-  // ── Contact ──
+  // ── Contact Handlers ──
   const handleContactChange = (e) => setContact({ ...contact, [e.target.name]: e.target.value });
-  const saveContact = () => {
-    localStorage.setItem("eternal_contact", JSON.stringify(contact));
+  const handleSaveContact = () => {
+    saveContact(contact);
     alert("Kontak berhasil disimpan!");
   };
 
@@ -218,7 +211,7 @@ const AdminInfo = () => {
             <Input label="No. Telepon" name="phone" value={contact.phone} onChange={handleContactChange} placeholder="0812-XXXX" />
           </div>
           <Input label="WhatsApp (Internasional)" name="whatsapp" value={contact.whatsapp} onChange={handleContactChange} placeholder="628123456789" />
-          <Button onClick={saveContact} variant="primary" icon={HiSave}>Simpan Kontak</Button>
+          <Button onClick={handleSaveContact} variant="primary" icon={HiSave}>Simpan Kontak</Button>
         </Card>
       )}
     </div>

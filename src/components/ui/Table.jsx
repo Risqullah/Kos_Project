@@ -1,5 +1,4 @@
-// src/components/ui/Table.jsx
-import React from "react";
+
 
 const Table = ({
   headers = [],
@@ -9,10 +8,10 @@ const Table = ({
   className = ""
 }) => {
   return (
-    <div className={`w-full overflow-x-auto rounded-2xl border border-gray-100 bg-white ${className}`}>
+    <div className={`w-full overflow-x-auto rounded-xl border border-[var(--color-primary-light)] bg-[var(--color-surface)] ${className}`}>
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="border-b border-gray-100 bg-[#FBF9F6]">
+          <tr className="border-b border-[var(--color-primary-light)] bg-[var(--color-tertiary)]">
             {headers.map((header, idx) => (
               <th
                 key={idx}

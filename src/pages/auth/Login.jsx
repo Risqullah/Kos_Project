@@ -26,7 +26,7 @@ export default function Login() {
     setLoading(true);
     setError("");
 
-    const result = loginUser(dataForm.email, dataForm.password);
+    const result = await loginUser(dataForm.email, dataForm.password);
 
     if (!result.success) {
       setError("Email atau password salah. Silakan coba lagi.");
@@ -48,12 +48,14 @@ export default function Login() {
     <Card variant="elevated" padding="p-8" className="w-full">
       {/* ── Logo & Header ── */}
       <div className="text-center mb-8">
-        <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary-dark)] flex items-center justify-center mx-auto shadow-neumorphic-sm mb-4">
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-          </svg>
-        </div>
-        <h1 className="text-2xl font-serif font-bold text-[var(--color-primary-dark)]">
+        <Link to="/" className="inline-block hover:scale-105 transition-transform duration-200">
+          <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary-dark)] flex items-center justify-center mx-auto shadow-sm mb-4 border border-[var(--color-primary-light)]/40">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+          </div>
+        </Link>
+        <h1 className="text-2xl font-sans font-semibold text-[var(--color-primary-dark)] text-shadow">
           Selamat Datang
         </h1>
         <p className="text-sm text-[var(--color-accent-text)]/60 mt-1 font-sans">
@@ -81,7 +83,7 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/70 mb-1.5">
+          <label className="block text-sm font-semibold text-[var(--color-accent-text)]/85 mb-1.5">
             Email
           </label>
           <input
@@ -90,14 +92,14 @@ export default function Login() {
             value={dataForm.email}
             onChange={handleChange}
             placeholder="owner@eternal.com"
-            className="w-full px-4 py-2.5 rounded-xl text-sm bg-white border border-gray-300 placeholder-gray-400 text-[var(--color-accent-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition"
+            className="w-full px-4 py-2.5 rounded-xl text-sm bg-[var(--color-surface)] border border-[var(--color-primary-light)]/30 hover:border-[var(--color-primary-light)]/60 placeholder-gray-400 text-[var(--color-accent-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)] transition"
             required
           />
         </div>
 
         {/* Password */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/70 mb-1.5">
+          <label className="block text-sm font-semibold text-[var(--color-accent-text)]/85 mb-1.5">
             Password
           </label>
           <div className="relative">
@@ -107,7 +109,7 @@ export default function Login() {
               value={dataForm.password}
               onChange={handleChange}
               placeholder="••••••••"
-              className="w-full px-4 py-2.5 rounded-xl text-sm bg-white border border-gray-300 placeholder-gray-400 text-[var(--color-accent-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition pr-11"
+              className="w-full px-4 py-2.5 rounded-xl text-sm bg-[var(--color-surface)] border border-[var(--color-primary-light)]/30 hover:border-[var(--color-primary-light)]/60 placeholder-gray-400 text-[var(--color-accent-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)] transition pr-11"
               required
             />
             <button
@@ -137,7 +139,7 @@ export default function Login() {
       <div className="p-4 rounded-2xl bg-[var(--color-tertiary)] border border-[var(--color-primary-light)] text-xs text-[var(--color-accent-text)]/70 space-y-1.5">
         <p className="font-bold text-[var(--color-accent-text)]/80 uppercase tracking-wider text-[10px]">Akun Demo</p>
         <p><span className="font-medium">Owner:</span> owner@eternal.com / admin</p>
-        <p><span className="font-medium">Penghuni:</span> siti@gmail.com / user</p>
+        <p><span className="font-medium">Penghuni:</span> anip@gmail.com / Cihuy12334</p>
       </div>
 
       {/* ── Register Link ── */}
