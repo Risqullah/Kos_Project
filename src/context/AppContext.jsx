@@ -3,6 +3,14 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../config/supabaseClient";
 
+const hashPassword = async (password) => {
+  if (!password) return "";
+  const msgBuffer = new TextEncoder().encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+};
+
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -180,46 +188,49 @@ export const AppProvider = ({ children }) => {
 
   // --- AUTH ACTIONS ---
   const loginUser = async (email, password) => {
+    const hashed = await hashPassword(password);
     // 1. Cek tabel owner
     const { data: ownerData, error: ownerErr } = await supabase
       .from("owner")
       .select("*")
-      .eq("email", email)
-      .eq("password", password);
+      .eq("email", email);
 
     if (!ownerErr && ownerData && ownerData.length > 0) {
       const owner = ownerData[0];
-      const user = {
-        id: owner.id_owner.toString(),
-        name: owner.nama,
-        email: owner.email,
-        role: "owner"
-      };
-      setCurrentUser(user);
-      localStorage.setItem("eternal_current_user", JSON.stringify(user));
-      return { success: true, user };
+      if (owner.password === hashed || owner.password === password) {
+        const user = {
+          id: owner.id_owner.toString(),
+          name: owner.nama,
+          email: owner.email,
+          role: "owner"
+        };
+        setCurrentUser(user);
+        localStorage.setItem("eternal_current_user", JSON.stringify(user));
+        return { success: true, user };
+      }
     }
 
     // 2. Cek tabel penghuni
     const { data: tenantData, error: tenantErr } = await supabase
       .from("penghuni")
       .select("*")
-      .eq("email", email)
-      .eq("password", password);
+      .eq("email", email);
 
     if (!tenantErr && tenantData && tenantData.length > 0) {
       const tenant = tenantData[0];
-      const user = {
-        id: tenant.id_penghuni.toString(),
-        name: tenant.nama,
-        email: tenant.email,
-        phone: tenant.no_hp,
-        roomId: tenant.id_kamar ? tenant.id_kamar.toString() : "",
-        role: "tenant"
-      };
-      setCurrentUser(user);
-      localStorage.setItem("eternal_current_user", JSON.stringify(user));
-      return { success: true, user };
+      if (tenant.password === hashed || tenant.password === password) {
+        const user = {
+          id: tenant.id_penghuni.toString(),
+          name: tenant.nama,
+          email: tenant.email,
+          phone: tenant.no_hp,
+          roomId: tenant.id_kamar ? tenant.id_kamar.toString() : "",
+          role: "tenant"
+        };
+        setCurrentUser(user);
+        localStorage.setItem("eternal_current_user", JSON.stringify(user));
+        return { success: true, user };
+      }
     }
 
     return { success: false, message: "Email atau password salah." };
@@ -247,13 +258,15 @@ export const AppProvider = ({ children }) => {
       return { success: false, message: "Email sudah terdaftar." };
     }
 
+    const hashedPassword = await hashPassword(password);
+
     // Masukkan ke tabel penghuni
     const { error } = await supabase
       .from("penghuni")
       .insert({
         nama: name,
         email: email,
-        password: password,
+        password: hashedPassword,
         no_hp: phone,
         status: "Nonaktif"
       });
@@ -311,12 +324,13 @@ export const AppProvider = ({ children }) => {
 
   // --- TENANT ACTIONS ---
   const addTenant = async (tenantData) => {
+    const hashedPassword = await hashPassword("user");
     const { error } = await supabase
       .from("penghuni")
       .insert({
         nama: tenantData.name,
         email: tenantData.email,
-        password: "user",
+        password: hashedPassword,
         no_hp: tenantData.phone,
         tanggal_masuk: tenantData.entryDate || null,
         tanggal_jatuh_tempo: tenantData.dueDate || null,
@@ -477,12 +491,13 @@ export const AppProvider = ({ children }) => {
     if (existingTenant && existingTenant.length > 0) {
       tenantId = existingTenant[0].id_penghuni;
     } else {
+      const hashedPassword = await hashPassword("user");
       const { data: newTenant, error: newTenantErr } = await supabase
         .from("penghuni")
         .insert({
           nama: res.name,
           email: res.email,
-          password: "user",
+          password: hashedPassword,
           no_hp: res.phone,
           status: "Nonaktif"
         })
@@ -587,13 +602,16 @@ export const AppProvider = ({ children }) => {
     if (!currentUser) return;
     
     if (currentUser.role === "owner") {
+      const updateFields = {
+        nama: updatedData.name,
+        no_hp: updatedData.phone
+      };
+      if (updatedData.password) {
+        updateFields.password = await hashPassword(updatedData.password);
+      }
       const { error } = await supabase
         .from("owner")
-        .update({
-          nama: updatedData.name,
-          no_hp: updatedData.phone,
-          ...(updatedData.password ? { password: updatedData.password } : {})
-        })
+        .update(updateFields)
         .eq("email", currentUser.email);
 
       if (!error) {
@@ -602,13 +620,16 @@ export const AppProvider = ({ children }) => {
         localStorage.setItem("eternal_current_user", JSON.stringify(updated));
       }
     } else {
+      const updateFields = {
+        nama: updatedData.name,
+        no_hp: updatedData.phone
+      };
+      if (updatedData.password) {
+        updateFields.password = await hashPassword(updatedData.password);
+      }
       const { error } = await supabase
         .from("penghuni")
-        .update({
-          nama: updatedData.name,
-          no_hp: updatedData.phone,
-          ...(updatedData.password ? { password: updatedData.password } : {})
-        })
+        .update(updateFields)
         .eq("email", currentUser.email);
 
       if (!error) {
