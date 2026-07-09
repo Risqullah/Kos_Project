@@ -1,12 +1,9 @@
-// src/components/Footer.jsx
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <footer className="max-w-7xl mx-auto rounded-t-3xl bg-[var(--color-primary-dark)] text-white py-10 px-8 md:px-12 mt-12 shadow-inner">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
-        
-        {/* Left Column (Brand info) */}
         <div className="md:col-span-5 space-y-4">
           <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition w-max">
             <div className="w-8 h-8 bg-white rounded flex items-center justify-center shadow-sm">
@@ -21,7 +18,6 @@ const Footer = () => {
           </p>
         </div>
         
-        {/* Middle Column (Navigation) */}
         <div className="md:col-span-3 space-y-4">
           <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)] border-b border-white/10 pb-2">Navigasi</h5>
           <ul className="space-y-2 text-xs text-white/70 font-sans font-medium">
@@ -31,7 +27,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Right Column (Contact info) */}
         <div className="md:col-span-4 space-y-4">
           <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)] border-b border-white/10 pb-2">Hubungi Kami</h5>
           <ul className="space-y-2 text-xs text-white/70 font-sans font-medium">
@@ -42,7 +37,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Copyright */}
       <div className="text-center pt-6 border-t border-white/10 text-[10px] text-white/40 tracking-[0.2em] uppercase font-sans font-bold">
         Copyright &copy; 2026 Eternal Kost. All rights reserved.
       </div>

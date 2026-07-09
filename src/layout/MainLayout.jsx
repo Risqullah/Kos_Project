@@ -1,13 +1,12 @@
 import { Outlet, Link, NavLink } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import Footer from '../components/Footer';
+import Footer from './Footer';
 
 const MainLayout = () => {
   const { currentUser } = useApp();
 
   return (
     <div className="bg-[var(--color-accent-bg)] text-[var(--color-accent-text)] min-h-screen">
-      {/* Navbar */}
       <nav className="max-w-7xl mx-auto flex justify-between items-center py-6 px-4 mb-4">
         <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition">
             <div className="w-8 h-8 bg-[var(--color-primary-dark)] rounded flex items-center justify-center">
@@ -68,10 +67,8 @@ const MainLayout = () => {
         </div>
       </nav>
 
-      {/* Konten Halaman (Home, dll akan dirender di sini) */}
       <Outlet />
 
-      {/* Footer */}
       <Footer />
     </div>
   );

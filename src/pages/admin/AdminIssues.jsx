@@ -8,6 +8,7 @@ import {
   HiCheckCircle,
   HiClock,
   HiRefresh,
+  HiTrash,
 } from "react-icons/hi";
 
 const STATUS_ICONS = {
@@ -17,7 +18,7 @@ const STATUS_ICONS = {
 };
 
 const AdminIssues = () => {
-  const { issues, updateIssueStatus } = useApp();
+  const { issues, updateIssueStatus, deleteIssue } = useApp();
   const statusOptions = ["Pending", "Diproses", "Selesai"];
 
   return (
@@ -103,7 +104,7 @@ const AdminIssues = () => {
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 items-center w-full">
                       {statusOptions.map((status) => (
                         <Button
                           key={status}
@@ -123,6 +124,20 @@ const AdminIssues = () => {
                           {status}
                         </Button>
                       ))}
+                      
+                      <Button
+                        onClick={() => {
+                          if (window.confirm("Hapus pengaduan ini secara permanen?")) {
+                            deleteIssue(issue.id);
+                          }
+                        }}
+                        variant="danger"
+                        size="sm"
+                        className="text-[10px] ml-auto !rounded-lg"
+                        icon={HiTrash}
+                      >
+                        Hapus
+                      </Button>
                     </div>
                   </div>
                 </Card>

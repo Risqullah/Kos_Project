@@ -1,31 +1,25 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useApp } from "../../context/AppContext";
+import { useApp } from "../context/AppContext";
 import {
   HiOutlineTemplate,
-  HiOutlineOfficeBuilding,
-  HiOutlineUserGroup,
-  HiOutlineCash,
   HiOutlineClipboardList,
-  HiOutlineDocumentText,
   HiOutlineClock,
+  HiOutlineUserGroup,
   HiOutlineLogout,
   HiOutlineHome
 } from "react-icons/hi";
 
-const Sidebar = ({ menuItems = [] }) => {
+const SidebarTenant = () => {
   const { currentUser, logoutUser } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const iconMap = {
-    Overview: HiOutlineTemplate,
-    Rooms: HiOutlineOfficeBuilding,
-    Tenants: HiOutlineUserGroup,
-    Finance: HiOutlineCash,
-    Issues: HiOutlineClipboardList,
-    Info: HiOutlineDocumentText,
-    History: HiOutlineClock
-  };
+  const menuItems = [
+    { name: "Dashboard Saya", path: "/tenant", Icon: HiOutlineTemplate },
+    { name: "Ajukan Pengaduan", path: "/tenant/pengaduan", Icon: HiOutlineClipboardList },
+    { name: "Riwayat Sewa", path: "/tenant/riwayat", Icon: HiOutlineClock },
+    { name: "Edit Profil", path: "/tenant/profil", Icon: HiOutlineUserGroup }
+  ];
 
   const handleLogout = () => {
     logoutUser();
@@ -34,7 +28,6 @@ const Sidebar = ({ menuItems = [] }) => {
 
   return (
     <aside className="w-64 bg-[var(--color-tertiary)] border-r border-[var(--color-primary-light)] flex flex-col h-screen sticky top-0 shrink-0">
-      {/* ── Brand (Logo Link) ── */}
       <Link to="/" className="p-6 border-b border-[var(--color-primary-light)] flex items-center gap-3 hover:opacity-90 transition">
         <div className="w-9 h-9 bg-[var(--color-primary-dark)] rounded-lg flex items-center justify-center shadow-sm">
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,14 +36,12 @@ const Sidebar = ({ menuItems = [] }) => {
         </div>
         <div>
           <div className="text-lg font-bold tracking-wider text-[var(--color-primary)] uppercase font-serif">Eternal</div>
-          <p className="text-[9px] text-[var(--color-accent-text)]/40 uppercase tracking-wider font-sans font-bold">Kos Management</p>
+          <p className="text-[9px] text-[var(--color-accent-text)]/40 uppercase tracking-wider font-sans font-bold">Tenant Portal</p>
         </div>
       </Link>
 
-      {/* ── Navigation ── */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {menuItems.map((item, idx) => {
-          const Icon = iconMap[item.icon] || HiOutlineTemplate;
           const isActive = location.pathname === item.path;
 
           return (
@@ -63,25 +54,23 @@ const Sidebar = ({ menuItems = [] }) => {
                   : "text-[var(--color-accent-text)]/60 hover:bg-[var(--color-primary-light)]/50 hover:text-[var(--color-accent-text)]"
               }`}
             >
-              <Icon size={18} className="shrink-0" />
+              <item.Icon size={18} className="shrink-0" />
               {item.name}
             </Link>
           );
         })}
       </nav>
 
-      {/* ── Back to Home Button ── */}
       <div className="p-4 border-t border-[var(--color-primary-light)]/40">
         <Link
           to="/"
           className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl text-xs font-extrabold uppercase tracking-wider text-white bg-[var(--color-primary-dark)] hover:bg-[var(--color-primary)] hover:text-[var(--color-accent-text)] shadow-md transition-all duration-250 w-full border border-[var(--color-primary)]/20"
         >
-          <HiOutlineHome size={18} className="shrink-0 text-white group-hover:text-[var(--color-accent-text)]" />
+          <HiOutlineHome size={18} className="shrink-0 text-white" />
           Beranda Utama
         </Link>
       </div>
 
-      {/* ── User ── */}
       {currentUser && (
         <div className="p-5 border-t border-[var(--color-primary-light)] bg-[var(--color-surface-inset)]/70">
           <div className="flex items-center gap-4 mb-4 px-2">
@@ -108,4 +97,4 @@ const Sidebar = ({ menuItems = [] }) => {
   );
 };
 
-export default Sidebar;
+export default SidebarTenant;

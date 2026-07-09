@@ -13,7 +13,8 @@ const TenantIssues = () => {
   const [formData, setFormData] = useState({
     category: "Fasilitas Kamar",
     desc: "",
-    imageName: ""
+    imageName: "",
+    image: ""
   });
   
   const [errors, setErrors] = useState({});
@@ -38,7 +39,11 @@ const TenantIssues = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, imageName: file.name });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, imageName: file.name, image: reader.result });
+      };
+      reader.readAsDataURL(file);
       if (errors.imageName) {
         setErrors({ ...errors, imageName: "" });
       }
@@ -63,29 +68,20 @@ const TenantIssues = () => {
     setSuccessMsg("");
 
     setTimeout(() => {
-      // Mockup link gambar Unsplash yang relevan berdasarkan kategori
-      let mockImageUrl = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400";
-      if (formData.category === "Kamar Mandi") {
-        mockImageUrl = "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=400";
-      } else if (formData.category === "Fasilitas Kamar") {
-        mockImageUrl = "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=400"; // AC
-      } else if (formData.category === "Kebersihan / Dapur") {
-        mockImageUrl = "https://images.unsplash.com/photo-1588854337221-4cf9fa96059c?auto=format&fit=crop&q=80&w=400"; // trash/kitchen
-      }
-
       addIssue({
         tenantName: currentUser.name,
         roomId: currentUser.roomId || "Umum",
         category: formData.category,
         desc: formData.desc,
-        image: mockImageUrl,
+        image: formData.image,
         imageName: formData.imageName
       });
 
       setFormData({
         category: "Fasilitas Kamar",
         desc: "",
-        imageName: ""
+        imageName: "",
+        image: ""
       });
       setSuccessMsg("Laporan pengaduan berhasil dikirim! Owner akan segera memproses.");
       setLoading(false);

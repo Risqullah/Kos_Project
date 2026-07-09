@@ -19,6 +19,7 @@ const AdminTenants = () => {
   const [formData, setFormData] = useState({
     id: "", name: "", email: "", phone: "",
     roomId: "", entryDate: "", dueDate: "", status: "Aktif",
+    nik: "",
   });
   const [error, setError] = useState("");
 
@@ -36,7 +37,7 @@ const AdminTenants = () => {
   const resetForm = () => {
     setShowModal(false);
     setIsEditing(false);
-    setFormData({ id: "", name: "", email: "", phone: "", roomId: "", entryDate: "", dueDate: "", status: "Aktif" });
+    setFormData({ id: "", name: "", email: "", phone: "", roomId: "", entryDate: "", dueDate: "", status: "Aktif", nik: "" });
     setError("");
   };
 
@@ -63,12 +64,14 @@ const AdminTenants = () => {
     e.preventDefault();
     setError("");
     if (!formData.name.trim()) return setError("Nama wajib diisi.");
+    if (!formData.nik?.trim()) return setError("NIK wajib diisi.");
+    if (!/^\d{16}$/.test(formData.nik.trim())) return setError("NIK harus terdiri dari 16 digit angka.");
     if (!formData.email.trim()) return setError("Email wajib diisi.");
     if (!formData.phone.trim()) return setError("No. HP wajib diisi.");
     if (!formData.roomId) return setError("Kamar wajib dipilih.");
     if (!formData.entryDate) return setError("Tanggal masuk wajib diisi.");
     if (!formData.dueDate) return setError("Tanggal jatuh tempo wajib diisi.");
-
+ 
     if (isEditing) {
       updateTenant(formData);
       resetForm();
@@ -85,6 +88,7 @@ const AdminTenants = () => {
 
   const tenantHeaders = [
     { key: "name", label: "Nama Penghuni" },
+    { key: "nik", label: "NIK", render: (v) => <span className="font-mono text-[11px] text-gray-500">{v || "-"}</span> },
     { key: "roomId", label: "Kamar", render: (v) => <span className="font-extrabold text-[var(--color-accent-text)]">{v}</span> },
     { key: "phone", label: "No. WA" },
     { key: "entryDate", label: "Tgl Masuk" },
@@ -157,6 +161,7 @@ const AdminTenants = () => {
                 <div className="p-3 rounded-xl bg-[var(--color-danger)]/10 border border-[var(--color-danger)]/20 text-xs text-[var(--color-danger)] font-medium">{error}</div>
               )}
               <Input label="Nama Lengkap" name="name" value={formData.name} onChange={handleChange} placeholder="Siti Rahma" required />
+              <Input label="NIK" name="nik" value={formData.nik || ""} onChange={handleChange} placeholder="Masukkan 16 digit NIK..." required maxLength={16} />
               <Input label="Email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="siti@email.com" required />
               <Input label="No. WhatsApp" name="phone" value={formData.phone} onChange={handleChange} placeholder="0812XXXXXXXX" required />
 

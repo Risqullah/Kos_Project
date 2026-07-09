@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useApp } from "../context/AppContext";
-import Sidebar from "../components/layout/Sidebar";
-import { ADMIN_MENU, TENANT_MENU } from "../config/constants";
+import SidebarOwner from "./SidebarOwner";
+import SidebarTenant from "./SidebarTenant";
 import { HiMenuAlt2, HiX } from "react-icons/hi";
 
 const DashboardLayout = () => {
@@ -13,13 +13,19 @@ const DashboardLayout = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const menuItems = currentUser.role === "owner" ? ADMIN_MENU : TENANT_MENU;
+  // Fungsi helper untuk merender Sidebar sesuai dengan role pengguna saat ini
+  const renderSidebar = () => {
+    if (currentUser.role === "owner") {
+      return <SidebarOwner />;
+    }
+    return <SidebarTenant />;
+  };
 
   return (
     <div className="flex h-screen w-screen overflow-hidden dashboard-dark-theme font-sans">
       {/* Desktop Sidebar */}
       <div className="hidden md:block">
-        <Sidebar menuItems={menuItems} />
+        {renderSidebar()}
       </div>
 
       {/* Mobile Sidebar */}
@@ -32,7 +38,7 @@ const DashboardLayout = () => {
             >
               <HiX size={24} />
             </button>
-            <Sidebar menuItems={menuItems} />
+            {renderSidebar()}
           </div>
           <div className="flex-1" onClick={() => setIsMobileOpen(false)} />
         </div>

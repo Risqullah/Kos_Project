@@ -42,7 +42,7 @@ const RoomsList = () => {
     phone: currentUser?.phone || "",
     startDate: "",
     duration: "1",
-    identityCard: null
+    nik: ""
   });
 
   const [errors, setErrors] = useState({});
@@ -122,15 +122,7 @@ const RoomsList = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({ ...formData, identityCard: file.name });
-      if (errors.identityCard) {
-        setErrors({ ...errors, identityCard: "" });
-      }
-    }
-  };
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -146,7 +138,11 @@ const RoomsList = () => {
       newErrors.phone = "Nomor WhatsApp harus berupa angka (9-15 digit).";
     }
     if (!formData.startDate) newErrors.startDate = "Tanggal mulai sewa wajib dipilih.";
-    if (!formData.identityCard) newErrors.identityCard = "Foto KTP/KTM wajib diunggah.";
+    if (!formData.nik) {
+      newErrors.nik = "NIK wajib diisi.";
+    } else if (!/^\d{16}$/.test(formData.nik.trim())) {
+      newErrors.nik = "NIK harus terdiri dari 16 digit angka.";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -172,10 +168,11 @@ const RoomsList = () => {
       phone: formData.phone,
       startDate: formData.startDate,
       duration: parseInt(formData.duration),
-      identityCardName: formData.identityCard
+      nik: formData.nik.trim()
     });
 
     setLoading(false);
+    // Jika penyimpanan berhasil, ubah state isSubmitted menjadi true untuk menampilkan pop-up sukses
     if (result && result.success) {
       setIsSubmitted(true);
     } else {
@@ -455,36 +452,27 @@ const RoomsList = () => {
                     </select>
                   </div>
 
-                  {/* Upload Identitas */}
+                  {/* Input NIK */}
                   <div className="space-y-1.5 w-full">
                     <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-accent-text)]/80">
-                      Unggah KTP / Kartu Mahasiswa (KTM) <span className="text-danger">*</span>
+                      Nomor Induk Kependudukan (NIK) <span className="text-danger">*</span>
                     </label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        id="identityCard"
-                        accept="image/*,application/pdf"
-                        onChange={handleFileChange}
-                        disabled={!isRoomAvailable}
-                        className="hidden"
-                      />
-                      <label
-                        htmlFor="identityCard"
-                        className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs bg-[var(--color-surface)] border border-[var(--color-primary-light)]/60 hover:bg-[var(--color-primary-light)]/10 cursor-pointer transition duration-200 border-dashed ${
-                          !isRoomAvailable ? "opacity-50 cursor-not-allowed" : ""
-                        } ${
-                          errors.identityCard ? "border-danger text-danger" : "text-[var(--color-accent-text)]/60"
-                        }`}
-                      >
-                        <span className="truncate">
-                          {formData.identityCard ? formData.identityCard : "Pilih file gambar KTP/KTM..."}
-                        </span>
-                        <span className="text-[var(--color-primary)] font-bold">Pilih File</span>
-                      </label>
-                    </div>
-                    {errors.identityCard && (
-                      <p className="text-[10px] text-danger font-medium tracking-wide">{errors.identityCard}</p>
+                    <input
+                      type="text"
+                      name="nik"
+                      value={formData.nik || ""}
+                      onChange={handleChange}
+                      placeholder="Masukkan 16 digit NIK..."
+                      disabled={!isRoomAvailable}
+                      maxLength={16}
+                      className={`w-full px-4 py-2.5 rounded-xl text-xs text-[var(--color-accent-text)] bg-[var(--color-surface)] border placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition duration-200 ${
+                        !isRoomAvailable ? "opacity-50 cursor-not-allowed" : ""
+                      } ${
+                        errors.nik ? "border-danger focus:ring-danger" : "border-[var(--color-primary-light)]/60"
+                      }`}
+                    />
+                    {errors.nik && (
+                      <p className="text-[10px] text-danger font-medium tracking-wide">{errors.nik}</p>
                     )}
                   </div>
                 </div>

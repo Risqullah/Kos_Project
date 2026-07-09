@@ -82,7 +82,8 @@ export const AppProvider = ({ children }) => {
           roomId: t.id_kamar ? t.id_kamar.toString() : "",
           entryDate: t.tanggal_masuk || "",
           dueDate: t.tanggal_jatuh_tempo || "",
-          status: t.status
+          status: t.status,
+          nik: t.nik || ""
         }));
         setTenants(mappedTenants);
       }
@@ -335,7 +336,8 @@ export const AppProvider = ({ children }) => {
         tanggal_masuk: tenantData.entryDate || null,
         tanggal_jatuh_tempo: tenantData.dueDate || null,
         status: tenantData.status || "Aktif",
-        id_kamar: tenantData.roomId ? parseInt(tenantData.roomId) : null
+        id_kamar: tenantData.roomId ? parseInt(tenantData.roomId) : null,
+        nik: tenantData.nik || null
       });
     
     if (!error) {
@@ -359,7 +361,8 @@ export const AppProvider = ({ children }) => {
         tanggal_masuk: updatedTenant.entryDate || null,
         tanggal_jatuh_tempo: updatedTenant.dueDate || null,
         status: updatedTenant.status,
-        id_kamar: updatedTenant.roomId ? parseInt(updatedTenant.roomId) : null
+        id_kamar: updatedTenant.roomId ? parseInt(updatedTenant.roomId) : null,
+        nik: updatedTenant.nik || null
       })
       .eq("id_penghuni", parseInt(updatedTenant.id));
     if (!error) {
@@ -471,6 +474,16 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const deleteIssue = async (issueId) => {
+    const { error } = await supabase
+      .from("laporan")
+      .delete()
+      .eq("id_laporan", parseInt(issueId));
+    if (!error) {
+      await fetchData();
+    }
+  };
+
   // --- RESERVATION ACTIONS ---
   const addReservation = async (res) => {
     const { data: roomData } = await supabase
@@ -499,7 +512,8 @@ export const AppProvider = ({ children }) => {
           email: res.email,
           password: hashedPassword,
           no_hp: res.phone,
-          status: "Nonaktif"
+          status: "Nonaktif",
+          nik: res.nik || null
         })
         .select();
       
@@ -692,6 +706,7 @@ export const AppProvider = ({ children }) => {
         deleteTransaction,
         addIssue,
         updateIssueStatus,
+        deleteIssue,
         addReservation,
         updateReservationStatus,
         saveRules: saveRulesToDb,
