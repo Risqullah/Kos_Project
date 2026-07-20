@@ -128,20 +128,6 @@ export default function Login() {
         </Button>
       </form>
 
-      {/* ── Divider ── */}
-      <div className="flex items-center gap-3 my-5">
-        <div className="flex-1 h-px bg-[var(--color-primary-light)]" />
-        <span className="text-xs text-[var(--color-accent-text)]/40 font-medium">atau</span>
-        <div className="flex-1 h-px bg-[var(--color-primary-light)]" />
-      </div>
-
-      {/* ── Info Akun Demo ── */}
-      <div className="p-4 rounded-2xl bg-[var(--color-tertiary)] border border-[var(--color-primary-light)] text-xs text-[var(--color-accent-text)]/70 space-y-1.5">
-        <p className="font-bold text-[var(--color-accent-text)]/80 uppercase tracking-wider text-[10px]">Akun Demo</p>
-        <p><span className="font-medium">Owner:</span> owner@eternal.com / admin</p>
-        <p><span className="font-medium">Penghuni:</span> anip@gmail.com / Cihuy12334</p>
-      </div>
-
       {/* ── Register Link ── */}
       <p className="text-center text-xs text-[var(--color-accent-text)]/50 mt-5 font-sans">
         Belum punya akun?{" "}
