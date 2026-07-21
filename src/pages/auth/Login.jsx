@@ -91,7 +91,7 @@ export default function Login() {
             name="email"
             value={dataForm.email}
             onChange={handleChange}
-            placeholder="owner@eternal.com"
+            placeholder="guest@gmail.com"
             className="w-full px-4 py-2.5 rounded-xl text-sm bg-[var(--color-surface)] border border-[var(--color-primary-light)]/30 hover:border-[var(--color-primary-light)]/60 placeholder-gray-400 text-[var(--color-accent-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)] transition"
             required
           />

@@ -174,7 +174,6 @@ const InfoRules = () => {
               </Card>
             </div>
 
-            {/* Peta Google Maps */}
             <div className="lg:col-span-7 h-[350px] md:h-[450px] rounded-2xl overflow-hidden border border-[var(--color-primary-light)]/40 shadow-sm">
               <iframe 
                 title="Peta Lokasi PCR"
